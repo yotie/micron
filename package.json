@@ -1,0 +1,20 @@
+{
+  "name": "micron",
+  "version": "1.0.0",
+  "description": "A Micro route handler utility",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yotieapp/micron.git"
+  },
+  "author": "Ashley Narcisse",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yotieapp/micron/issues"
+  },
+  "homepage": "https://github.com/yotieapp/micron#readme",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+}
