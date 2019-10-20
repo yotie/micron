@@ -6,7 +6,8 @@ const routeHandler = fn => async (req, res) => {
   const unauthorized = msg => send(res, 401, msg);
   const notFound = msg => send(res, 404, msg);
   const error =  err => send(res, 500, err);
-  const body = req.method === 'POST' && await json(req) || {};
+  const body = ['PUT', 'POST', 'PATCH'].includes(req.method)
+    && await json(req) || {};
 
   try {
     return fn({req, res, body, ok, badRequest, unauthorized, notFound, error})
