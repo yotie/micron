@@ -17,10 +17,20 @@ const routeHandler = fn => async (req, res) => {
   }
 };
 
-const get = routeHandler;
-const post = fn => routeHandler(params => {
-  const { req, notFound } = params;
-  return (req.method === 'POST') && fn(params) || notFound();
+const isValidMethod = (method='') =>
+  ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'].includes(method.toUpperCase());
+
+const routeType = method => routeHandler(params => {
+  const { req, notFound, error } = params;
+  if(!isValidMethod(method)) return error({ msg: 'Unsupported HTTP method' });
+
+  return (req.method === method) && fn(params) || notFound();
 });
 
-module.exports = { get, post };
+const get = routeType('GET');
+const put = routeType('PUT');
+const post = routeType('POST')
+const patch = routeType('PATCH');
+const del = routeType('DELETE');
+
+module.exports = { get, put, post, patch, delete: del };
