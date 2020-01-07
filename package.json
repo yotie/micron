@@ -1,9 +1,10 @@
 {
   "name": "@yotieapp/micron",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A Micro route handler utility",
   "main": "src/index.js",
   "scripts": {
+    "dev": "micro-dev examples/index.js",
     "test": "echo 'To be Implemented'"
   },
   "repository": {
@@ -18,5 +19,11 @@
   "homepage": "https://github.com/yotieapp/micron#readme",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
+  },
+  "dependencies": {
+    "micro": "^9.3.4"
+  },
+  "devDependencies": {
+    "micro-dev": "^3.0.0"
   }
 }

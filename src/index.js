@@ -20,7 +20,7 @@ const routeHandler = fn => async (req, res) => {
 const isValidMethod = (method='') =>
   ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'].includes(method.toUpperCase());
 
-const routeType = method => routeHandler(params => {
+const routeType = method => fn => routeHandler(params => {
   const { req, notFound, error } = params;
   if(!isValidMethod(method)) return error({ msg: 'Unsupported HTTP method' });
 
