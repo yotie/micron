@@ -1,4 +1,4 @@
-const {send, json} = require('micro');
+const { send, json } = require('micro');
 
 const routeHandler = fn => async (req, res) => {
   const ok = data => send(res, 200, data);
@@ -12,9 +12,15 @@ const routeHandler = fn => async (req, res) => {
   try {
     return fn({req, res, body, ok, badRequest, unauthorized, notFound, error})
   } catch (err) {
-    console.error('=======> UNCAUGHT ERROR!!!!', err);
+    console.error('❌[MICRON] UNCAUGHT ERROR!!!!', err);
     return error(err);
   }
 };
 
-module.exports = routeHandler;
+const get = routeHandler;
+const post = fn => routeHandler(params => {
+  const { req, notFound } = params;
+  return (req.method === 'POST') && fn(params) || notFound();
+});
+
+module.exports = { get, post };
