@@ -27,10 +27,11 @@ const routeType = method => routeHandler(params => {
   return (req.method === method) && fn(params) || notFound();
 });
 
+
 const get = routeType('GET');
 const put = routeType('PUT');
 const post = routeType('POST')
 const patch = routeType('PATCH');
 const del = routeType('DELETE');
 
-module.exports = { get, put, post, patch, delete: del };
+module.exports = { routeHandler, get, put, post, patch, delete: del };
