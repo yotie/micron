@@ -6,11 +6,16 @@ const routeHandler = fn => async (req, res) => {
   const unauthorized = msg => send(res, 401, msg);
   const notFound = msg => send(res, 404, msg);
   const error =  err => send(res, 500, err);
+  const brok = data => {
+    res.setHeader('Content-Encoding', 'br');
+    return send(res, 200, data);
+  }
+
   const body = ['PUT', 'POST', 'PATCH'].includes(req.method)
     && await json(req) || {};
 
   try {
-    return fn({req, res, body, ok, badRequest, unauthorized, notFound, error})
+    return fn({req, res, body, ok, brok, badRequest, unauthorized, notFound, error})
   } catch (err) {
     console.error('❌[MICRON] UNCAUGHT ERROR!!!!', err);
     return error(err);
