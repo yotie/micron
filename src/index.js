@@ -1,4 +1,5 @@
 const { send, json } = require('micro');
+const { broccoli } = require('@yotieapp/utils');
 
 const routeHandler = fn => async (req, res) => {
   const ok = data => send(res, 200, data);
@@ -8,7 +9,7 @@ const routeHandler = fn => async (req, res) => {
   const error =  err => send(res, 500, err);
   const brok = data => {
     res.setHeader('Content-Encoding', 'br');
-    return send(res, 200, data);
+    return ok(Buffer.from(broccoli.compress(data)), 'base64');
   }
 
   const body = ['PUT', 'POST', 'PATCH'].includes(req.method)
