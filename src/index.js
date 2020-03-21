@@ -9,7 +9,7 @@ const routeHandler = fn => async (req, res) => {
   const error =  err => send(res, 500, err);
   const brok = data => {
     res.setHeader('Content-Encoding', 'br');
-    return ok(Buffer.from(broccoli.compress(data)), 'base64');
+    return ok(Buffer.from(broccoli.compress(data), 'base64'));
   }
 
   const body = ['PUT', 'POST', 'PATCH'].includes(req.method)
