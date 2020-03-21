@@ -20,6 +20,7 @@ jobs:
           scope: '@yotieapp'
       - run: npm ci
       - run: npm test
+      - run: echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
