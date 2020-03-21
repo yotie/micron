@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "micro-dev examples/index.js",
-    "test": "echo 'To be Implemented'"
+    "test": "echo 'To be Implemented'",
+    "prepublishOnly": "echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc"
   },
   "repository": {
     "type": "git",

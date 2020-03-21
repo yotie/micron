@@ -19,10 +19,13 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@yotieapp'
       - run: npm ci
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
       - run: npm test
-      - run: echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
