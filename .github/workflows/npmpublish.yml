@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  build_n_publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -17,15 +17,13 @@ jobs:
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
-          scope: '@yotieapp'
-      - run: npm ci
+          scope: "@yotieapp"
+      - run: yarn
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-      - run: npm test
+      - run: yarn build
         env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-
+          NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
