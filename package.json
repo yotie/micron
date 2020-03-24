@@ -1,11 +1,15 @@
 {
   "name": "@yotieapp/micron",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "A Micro route handler utility",
-  "main": "src/index.js",
+  "source": "src/index.js",
+  "main": "dist/index.modern.js",
+  "module": "dist/index.modern.module.js",
   "scripts": {
-    "dev": "micro-dev examples/index.js",
-    "test": "echo 'To be Implemented'",
+    "prebuild": "rm -rf ./dist",
+    "build": "microbundle src/index.js -f cjs,es,modern --target node --compress",
+    "dev": "microbundle --target node watch",
+    "test": "jest",
     "prepublishOnly": "echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc"
   },
   "repository": {
@@ -22,10 +26,9 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@yotieapp/utils": "^1.7.1",
-    "micro": "^9.3.4"
+    "@yotieapp/utils": "^1.7.5"
   },
   "devDependencies": {
-    "micro-dev": "^3.0.0"
+    "microbundle": "next"
   }
 }
