@@ -1,6 +1,6 @@
 {
   "name": "@yotieapp/micron",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "A Micro route handler utility",
   "source": "src/index.js",
   "main": "dist/index.modern.js",
