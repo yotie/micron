@@ -24,8 +24,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - run: yarn build
-      - name: "Automated NPM Version Bump"
-        uses: "phips28/gh-action-bump-version@master"
+      - name: Automated NPM Version Bump
+        uses: phips28/gh-action-bump-version@master
         with:
           tag-prefix: ''
         env:
