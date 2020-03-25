@@ -16,8 +16,7 @@ const routeHandler = fn => async (req, res) => {
   };
 
   const body =
-    (["PUT", "POST", "PATCH"].includes(req.method) && (await res.json(req))) ||
-    {};
+    (["PUT", "POST", "PATCH"].includes(req.method) && req.body) || {};
 
   try {
     return fn({
