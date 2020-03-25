@@ -40,6 +40,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Automated GIT Version Bump
-      uses: anothrNick/github-tag-action@1.17.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: anothrNick/github-tag-action@1.17.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
