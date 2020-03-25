@@ -5,7 +5,7 @@ const parseBody = async req => {
   try { return json(req) }
   catch (error) { console.warn('👀 An error occured while parsing the request body to JSON.')}
 
-  return text(req);
+  return text(req, {limit: '10mb', encoding: 'utf-8' });
 }
 
 const routeHandler = fn => async (req, res) => {
