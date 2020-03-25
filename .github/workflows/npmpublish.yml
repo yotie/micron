@@ -24,20 +24,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - run: yarn build
-      - name: Automated NPM Version Bump
-        uses: phips28/gh-action-bump-version@master
-        with:
-          tag-prefix: ''
+      # - name: Automated NPM Version Bump
+      #   uses: phips28/gh-action-bump-version@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Automated GIT Version Bump
+        uses: anothrNick/github-tag-action@1.17.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-  versioning:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Automated GIT Version Bump
-        uses: anothrNick/github-tag-action@1.17.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
