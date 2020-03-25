@@ -12,7 +12,9 @@ jobs:
   build_n_publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: '0'
       - uses: actions/setup-node@v1
         with:
           node-version: 12
@@ -24,6 +26,20 @@ jobs:
       - run: yarn build
         env:
           NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: "Automated NPM Version Bump"
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm publish
         env:
           NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  versioning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Automated GIT Version Bump
+      uses: anothrNick/github-tag-action@1.17.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

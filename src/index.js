@@ -1,5 +1,12 @@
-const { send, json } = require("micro");
+const { send, json, text } = require("micro");
 const { broccoli } = require("@yotieapp/utils");
+
+const parseBody = async req => {
+  try { return json(req) }
+  catch (error) { console.warn('👀 An error occured while parsing the request body to JSON.')}
+
+  return text(req);
+}
 
 const routeHandler = fn => async (req, res) => {
   const ok = data => send(res, 200, data);
@@ -12,8 +19,7 @@ const routeHandler = fn => async (req, res) => {
     return ok(Buffer.from(broccoli.compress(data), "base64"));
   };
 
-  const body =
-    (["PUT", "POST", "PATCH"].includes(req.method) && (await json(req))) || {};
+  const body = ["PUT", "POST", "PATCH"].includes(req.method) && parseBody(req);
 
   try {
     return fn({
