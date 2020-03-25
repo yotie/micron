@@ -1,10 +1,7 @@
+const { send, json } = require("micro");
 const { broccoli } = require("@yotieapp/utils");
 
 const routeHandler = fn => async (req, res) => {
-  const send = (res, statusCode, data) => {
-    res.statusCode = statusCode;
-    res.send(data);
-  };
   const ok = data => send(res, 200, data);
   const badRequest = msg => send(res, 400, msg);
   const unauthorized = msg => send(res, 401, msg);
@@ -16,7 +13,7 @@ const routeHandler = fn => async (req, res) => {
   };
 
   const body =
-    (["PUT", "POST", "PATCH"].includes(req.method) && req.body) || {};
+    (["PUT", "POST", "PATCH"].includes(req.method) && (await json(req))) || {};
 
   try {
     return fn({

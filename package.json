@@ -1,6 +1,6 @@
 {
   "name": "@yotieapp/micron",
-  "version": "1.5.5",
+  "version": "1.6.0",
   "description": "A Micro route handler utility",
   "source": "src/index.js",
   "main": "dist/index.modern.js",
@@ -26,7 +26,8 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@yotieapp/utils": "^1.7.5"
+    "@yotieapp/utils": "^1.7.5",
+    "micro": "^9.3.4"
   },
   "devDependencies": {
     "microbundle": "next"
