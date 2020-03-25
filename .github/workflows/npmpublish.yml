@@ -22,19 +22,15 @@ jobs:
           scope: "@yotieapp"
       - run: yarn
         env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - run: yarn build
-        env:
-          NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: "Automated NPM Version Bump"
         uses: "phips28/gh-action-bump-version@master"
         with:
           tag-prefix: ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm publish
         env:
-          NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   versioning:
     runs-on: ubuntu-latest
