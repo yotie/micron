@@ -21,7 +21,7 @@ const routeHandler = fn => async (req, res) => {
     return ok(Buffer.from(broccoli.compress(data), "base64"));
   };
 
-  const body = ["PUT", "POST", "PATCH"].includes(req.method) && parseBody(req);
+  const body = ["PUT", "POST", "PATCH"].includes(req.method) && await parseBody(req);
 
   try {
     return fn({
