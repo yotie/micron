@@ -11,19 +11,18 @@ const parseBody = async req => {
 }
 
 const routeHandler = fn => async (req, res) => {
-  const ok = data => send(res, 200, data);
-  const badRequest = msg => send(res, 400, msg);
-  const unauthorized = msg => send(res, 401, msg);
-  const notFound = msg => send(res, 404, msg);
-  const error = err => send(res, 500, err);
-  const brok = data => {
-    res.setHeader("Content-Encoding", "br");
-    return ok(Buffer.from(broccoli.compress(data), "base64"));
-  };
-
-  const body = ["PUT", "POST", "PATCH"].includes(req.method) && await parseBody(req);
-
   try {
+    const body = ["PUT", "POST", "PATCH"].includes(req.method) && await parseBody(req);
+    const ok = data => send(res, 200, data);
+    const badRequest = msg => send(res, 400, msg);
+    const unauthorized = msg => send(res, 401, msg);
+    const notFound = msg => send(res, 404, msg);
+    const error = err => send(res, 500, err);
+    const brok = data => {
+      res.setHeader("Content-Encoding", "br");
+      return ok(Buffer.from(broccoli.compress(data), "base64"));
+    };
+
     return fn({
       req,
       res,
