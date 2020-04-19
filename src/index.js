@@ -23,7 +23,7 @@ const routeHandler = fn => async (req, res) => {
       return ok(Buffer.from(broccoli.compress(data), "base64"));
     };
     const redirect = url => {
-      if (url) throw new Error('A URL is required in order to perform a redirect');
+      if (!url) throw new Error('A URL is required in order to perform a redirect');
 
       res.setHeader('Location', url);
       return send(res, 302);
