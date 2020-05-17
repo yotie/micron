@@ -1,8 +1,9 @@
 const { send, json, text } = require("micro");
-const { broccoli } = require("@yotieapp/utils");
+const { broccoli } = require("@yotie/utils");
 
 const parseBody = async req => {
-  if(typeof req.body === 'object') return req.body;
+  if (!req.body) req.body = '{}';
+  if (typeof req.body === 'object') return req.body;
 
   try { return json(req) }
   catch (error) { console.warn('👀 An error occured while parsing the request body to JSON.')}

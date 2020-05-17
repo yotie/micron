@@ -1,6 +1,6 @@
 {
-  "name": "@yotieapp/micron",
-  "version": "1.7.1",
+  "name": "@yotie/micron",
+  "version": "1.7.2",
   "description": "A Micro route handler utility",
   "source": "src/index.js",
   "main": "dist/index.modern.js",
@@ -9,24 +9,23 @@
     "prebuild": "rm -rf ./dist",
     "build": "microbundle src/index.js -f cjs,es,modern --target node --compress",
     "dev": "microbundle --target node watch",
-    "test": "jest",
-    "prepublishOnly": "echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yotieapp/micron.git"
+    "url": "git+https://github.com/yotie/micron.git"
   },
   "author": "Ashley Narcisse",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yotieapp/micron/issues"
+    "url": "https://github.com/yotie/micron/issues"
   },
-  "homepage": "https://github.com/yotieapp/micron#readme",
+  "homepage": "https://github.com/yotie/micron#readme",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@yotieapp/utils": "^1.7.5",
+    "@yotie/utils": "^1.7.5",
     "micro": "^9.3.4"
   },
   "devDependencies": {
