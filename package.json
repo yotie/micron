@@ -1,10 +1,8 @@
 {
   "name": "@yotie/micron",
-  "version": "1.7.2",
+  "version": "1.7.4",
   "description": "A Micro route handler utility",
-  "source": "src/index.js",
-  "main": "dist/index.modern.js",
-  "module": "dist/index.modern.module.js",
+  "main": "src/index.js",
   "scripts": {
     "prebuild": "rm -rf ./dist",
     "build": "microbundle src/index.js -f cjs,es,modern --target node --compress",
