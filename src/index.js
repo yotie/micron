@@ -45,7 +45,7 @@ const routeHandler = fn => async (req, res) => {
     });
   } catch (err) {
     console.error("❌[MICRON] UNCAUGHT ERROR!!!!", err);
-    return error(err);
+    return send(res, 500, err);
   }
 };
 
