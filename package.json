@@ -1,11 +1,15 @@
 {
   "name": "@yotie/micron",
-  "version": "1.7.5",
-  "description": "A Micro route handler utility",
-  "main": "src/index.js",
+  "version": "2.0.0-rc",
+  "description": "A serverless micro-framework for Vercel",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "prebuild": "rm -rf ./dist",
-    "build": "microbundle src/index.js -f cjs,es,modern --target node --compress",
+    "build": "microbundle -o dist/index.js -f cjs,es,modern --target node --compress",
     "dev": "microbundle --target node watch",
     "test": "jest"
   },
@@ -14,7 +18,7 @@
     "url": "git+https://github.com/yotie/micron.git"
   },
   "author": "Ashley Narcisse",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/yotie/micron/issues"
   },
@@ -23,10 +27,20 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@yotie/utils": "^1.7.5",
-    "micro": "^9.3.4"
+    "@vercel/node": "^1.8.0",
+    "debug": "^4.1.1",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {
-    "microbundle": "next"
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/debug": "^4.1.5",
+    "@types/jest": "^25.2.1",
+    "@types/node-fetch": "^2.5.7",
+    "@types/test-listen": "^1.1.0",
+    "jest": "^26.4.2",
+    "microbundle": "next",
+    "node-fetch": "^2.6.0",
+    "test-listen": "^1.1.0"
   }
 }
