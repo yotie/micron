@@ -61,6 +61,11 @@ export default createLambda(
 
 ## Getting Started
 
+Add the yotie registry to your *`.npmrc`*
+```
+@yotie:registry=https://npm.pkg.github.com
+```
+Install the package
 ```sh
 $ yarn add @yotie/micron
 ```
