@@ -11,32 +11,23 @@
 
 > A micro http framework that sits neatly on top of @vercel/now for creating hyper-expresive lambdas.
 
-Vercel is nice, but writing production-ready lambda services can require quite a bit of boilerplate. __micron__ is here to help improve that experienceby providing powerful helpers that allow you to create expressive and extensible lambdas.
+Vercel is nice, but writing production-ready lambda services can require quite a bit of boilerplate. __micron__ is here to help improve that experienceby providing powerful helpers that allow you to create expressive and composable lambdas.
   </p>
 </p>
 
+<br/>
+<br/>
+<br/>
+
 ## Usage
-### GET
-```js
-const { get } = require('@yotie/micron');
-
-module.exports = get(({ ok }) => {
-  ...some API logic
-  return ok({ success: true });
-});
-```
-
-## Getting Started
-
-```sh
-$ yarn add @yotie/micron
-```
-
+**BEFORE MICRON**
 ```ts
+import checkAuth from './checkAuth';
+
 export default function(req: NowRequest, res: NowResponse) {
   try {
     if (!req.method.toUpperCase().equals('POST'))
-      return res.status(404).send('Not Fund');
+      return res.status(404).send('Not Found');
 
     const auth = checkAuth(req.headers['Authorization']);
     if (!auth.isValid) return res.status(401).send('Unauthorized');
@@ -52,14 +43,13 @@ export default function(req: NowRequest, res: NowResponse) {
   }
 }
 ```
-
-
+**WITH MICRON**
 ```js
-import { createLambda } from '@yotie/micron';
+import { createLambda, post } from '@yotie/micron';
 import authMiddleWare from './auth';
 
 export default createLambda(
-  post(({ req, body, ok, error}) => {
+  post(({ req, body, ok, error }) => {
       const { user } = req.auth;
       console.log('Logged in with', user);
 
@@ -69,19 +59,64 @@ export default createLambda(
 );
 ```
 
+## Getting Started
+
+```sh
+$ yarn add @yotie/micron
+```
+
+Create a simple lambda
+```js
+import micron from '@yotie/micron';
+
+export default micron(({ ok }: MicronParams) => {
+  return ok({ success: true, hello: 'world' });
+});
+```
+
 
 ## API
+
+### MicronParams
+Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers
+
+
+|property|type|decription|
+|------|----|----------|
+|req | `NowRequest` | |
+|res | `NowResponse` | |
+|body | `NowRequestBody` | |
+|cookies | `NowRequestCookies` | |
+|query | `NowRequestQuery` | |
+|ok | `ResponseHelper` | Returns a __200__ HTTP response with your payload|
+|badRequest | `ResponseHelper`| Returns a __400__ HTTP response with your payload|
+|unauthorized| `ResponseHelper`| Returns a __401__ HTTP response with your payload|
+|notFound |`ResponseHelper`|  Returns a __404__ HTTP response with your payload|
+|error| `ResponseHelper`| Returns a __500__ HTTP response with your payload|
+
+<br/>
+<br/>
+
+The different `ResponseHelpers` are simple functions that allow you to return a ServerResponse with a preconfigured http status code.
+
+Instead of doing...
+```js
+return res.status(500).json({ message: 'Catastrophic Failure' });
+```
+...you can simplify your code to this:
+```js
+return error({ message: 'Catastrophic Failure' });
+```
+
+Most folks might be fine with the vanilla Vercel approach, but leveraging these helpers help enhance the readability and maintainability of your serverless porjects by cutting down on some of the bloat.
+
+
+
+
+
+
 The  `get(fn)` and `post(fn)` route functions accept a function argument that will get passed a `RouteArguments` object the schema can be seen in the following snippet.
 
-```
-RouteArguments
-{
-  req: RequestObject
-  res: ResponseObject
-  body: Object
-  ...ResponseHelpers
-}
-```
 
 The Route arguments also come included with a set of `ResponseHelpers` that provide usefult functions for controling the shape of your http responses.
 
@@ -126,8 +161,14 @@ export default micron(
 
 
 
-### Middlewares
+## Middlewares
+Middleware functions are functions that have access to the request object (req) and the response object (res) to perform some task before the main lambda executes.
 
+- Execute any code.
+- Make changes to the request and the response objects.
+- End the request-response cycle, example: `return badRequest();`
+
+> Note: Middlewares must have the following signature `fn => (req, res) => fn(req, res)`
 
 ```js
 import { createLambda } from '@yotie/micron'
@@ -167,12 +208,33 @@ const auth = (lambda: NowLambda) => {
 
 ```
 
+
+
+## Testing
+
+```js
+import micron, { mockLambda } from '@yotie/micron';
+
+test('', async () => {
+  const lambda = micron(({ ok }) => ok({ success: true }));
+  const { fetch } = await mockLambda(lambda);
+
+  const res = await fetch();
+  const { success } = await res.json();
+
+  expect(res.ok).toBe(true);
+  expect(success).toBe(true);
+});
+```
+
+
+
 ## TODO
 - [ ] Create banner
-- [ ] Documentation 🚧
-  - [ ] Improve intro and Getting started
-  - [ ] Complete list of helpers from MicronParams 🚧
-  - [ ] MicronHelpers and their scenarios
+- [ ] Documentation
+  - [x] Improve intro and Getting started ✅
+  - [x] Complete list of helpers from MicronParams ✅
+  - [ ] MicronHelpers and their scenarios 🚧
     - [ ] `get`
     - [ ] `put`
     - [ ] `post`
@@ -181,7 +243,7 @@ const auth = (lambda: NowLambda) => {
   - [ ] Document createLambda and use cases
     - [ ]  cors and networking configuration
     - [ ]  middleware
-  - [ ]  demonstrate the flexibility of our middleware pattern
+      - [ ]  flexibility of our middleware pattern
   - [ ]  Testing and Mocking
   - [ ]  Contributing
 - [ ] Test more negative cases

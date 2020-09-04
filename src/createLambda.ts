@@ -19,9 +19,15 @@ const intro = (fn: NowLambda) =>
     return fn(req, res);
   };
 
+
+
+interface MicronMiddleware {
+  (fn: NowLambda): NowLambda
+}
+
 type LambdaOptions = {
   cors?: CorsOptions,
-  middlewares?: any[]
+  middlewares?: MicronMiddleware[]
 }
 
 export function createLambda(service: NowLambda, opts: LambdaOptions = {}): NowLambda {
