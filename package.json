@@ -32,7 +32,7 @@
     "request-promise": "^4.2.6"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-env": "^7.11.5",
     "@babel/preset-typescript": "^7.9.0",
     "@types/debug": "^4.1.5",
     "@types/jest": "^25.2.1",
