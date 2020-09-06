@@ -1,4 +1,4 @@
-import { createServer } from 'http';
+import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { Readable } from 'stream';
 import { NowRequest, NowRequestBody, NowRequestQuery, NowRequestCookies, NowResponse } from '@vercel/node';
 
