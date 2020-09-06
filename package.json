@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/yotie/micron.git"
   },
-  "author": "Ashley Narcisse",
+  "author": "Ashley Narcisse <@darkfadr>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/yotie/micron/issues"
@@ -29,6 +29,7 @@
   "dependencies": {
     "@vercel/node": "^1.8.0",
     "debug": "^4.1.1",
+    "matcher": "^3.0.0",
     "request-promise": "^4.2.6"
   },
   "devDependencies": {
