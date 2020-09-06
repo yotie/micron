@@ -88,11 +88,11 @@ Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#offi
 
 |property|type|decription|
 |------|----|----------|
-|req | `NowRequest` | |
-|res | `NowResponse` | |
-|body | `NowRequestBody` | |
-|cookies | `NowRequestCookies` | |
-|query | `NowRequestQuery` | |
+|req | `NowRequest` | The incoming Request object |
+|res | `NowResponse` | The outgoing Response object|
+|body | `NowRequestBody` | An object containing the body sent by the request|
+|cookies | `NowRequestCookies` | An object containing the cookies sent by the request|
+|query | `NowRequestQuery` | An object containing the request's query string|
 |ok | `ResponseHelper` | Returns a __200__ HTTP response with your payload|
 |badRequest | `ResponseHelper`| Returns a __400__ HTTP response with your payload|
 |unauthorized| `ResponseHelper`| Returns a __401__ HTTP response with your payload|
@@ -102,9 +102,7 @@ Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#offi
 <br/>
 <br/>
 
-The different `ResponseHelpers` are simple functions that allow you to return a ServerResponse with a preconfigured http status code.
-
-Instead of doing...
+The different `ResponseHelpers` are simple functions that allow you to return a ServerResponse with a preconfigured http status code. Leveraging these functions help enhance the readability and maintainability of your serverless projects by cutting down on some of the bloat. Instead of doing...
 ```js
 return res.status(500).json({ message: 'Catastrophic Failure' });
 ```
@@ -113,57 +111,66 @@ return res.status(500).json({ message: 'Catastrophic Failure' });
 return error({ message: 'Catastrophic Failure' });
 ```
 
-Most folks might be fine with the vanilla Vercel approach, but leveraging these helpers help enhance the readability and maintainability of your serverless porjects by cutting down on some of the bloat.
+These functions accept `String, Array, Object, Buffer` as valid inputs which will become the response body.
 
 
 
 
 
+## Micron Helpers
 
-The  `get(fn)` and `post(fn)` route functions accept a function argument that will get passed a `RouteArguments` object the schema can be seen in the following snippet.
-
-
-The Route arguments also come included with a set of `ResponseHelpers` that provide usefult functions for controling the shape of your http responses.
-
-|method|args|decription|
-|------|----|----------|
-|ok | `payload: [string,array,object]` | Returns a __200__ HTTP response with your payload|
-|badRequest | `payload: [string,array,object]`| Returns a __400__ HTTP response with your payload|
-|unauthorized| `payload: [string,array,object]`| Returns a __401__ HTTP response with your payload|
-|notFound |`payload: [string,array,object]`|  Returns a __404__ HTTP response with your payload|
-|error| `payload: [string,array,object]`| Returns a __500__ HTTP response with your payload|
-
-
-<br/>
-<br/>
-
+### micron
+### get
+### post
+### put
+### del
 ### match
 
 ```js
-import micron, { get, post, match } from '@yotie/micron';
+import { get, post, match } from '@yotie/micron';
 
-export default micron(
-  match({
-    post(async ({ body, ok, error}) {
-      const user = await createUser(body);
-      return ok(user);
-    }),
+export default match({
+  post(async ({ body, ok, error}) {
+    const user = await createUser(body);
+    return ok(user);
+  }),
 
-    get(async ({query, ok, notFound}) {
-      const user = await getUser(query.id);
-      if(!user?.id) return notFound();
+  get(async ({query, ok, notFound}) {
+    const user = await getUser(query.id);
+    if(!user?.id) return notFound();
 
-      return ok(user);
-    })
+    return ok(user);
   })
-)
+})
 ```
 
 
 
-### createLambda
+## createLambda
 
+```
+createLambda(
+  lambda: NowLambda,
+  {
+    cors: CorsOptions,
+    middlewares: MicronMiddleware[]
+  }
 
+)
+```
+
+```js
+import { createLambda, post } from '@yotie/micron';
+import authMiddleWare from './auth';
+
+export default createLambda(
+  post(({ req, body, ok, error }) => {
+      const { user } = req.auth;
+      return ok({ success: true, body, user });
+  }),
+  { middlewares: [authMiddleWare]}
+);
+```
 
 
 ## Middlewares
@@ -198,20 +205,34 @@ You can also use micron to build out your middlewares.
 //auth.js
 
 import { micron, NowLambda } from '@yotie/micron';
+import { isValid } from './_utils';
 
 const auth = (lambda: NowLambda) => {
-  return micron({req, res, body, unauthorized } => {
+  return micron({ req, res, body, unauthorized } => {
     const token = req.headers['Authorization'];
 
     if (!isValid(token)) return unautorized();
 
     console.log('User is allowed to access this lambda');
-
     return lambda(req, res);
   });
 }
 
 ```
+
+## CORS
+
+CorsOptions
+|Parameter| type | default | Description|
+|---------|------|---------|------------|
+|origin| `string` | * | |
+|maxAge| `Number` | 86400 | |
+|allowMethods | `string[]` | [GET, PUT, POST, PATCH, DELETE, OPTIONS] | |
+|allowHeaders| `string[]`| [ X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept]| |
+|allowCredentials | `Boolean` | true | |
+|exposeHeaders| `string[]`| []| |
+
+> Note: the origin can support multiple domains being set as well as glob patters
 
 
 
@@ -240,20 +261,23 @@ test('', async () => {
   - [x] Improve intro and Getting started ✅
   - [x] Complete list of helpers from MicronParams ✅
   - [ ] MicronHelpers and their scenarios 🚧
+    - [ ] `micron`
     - [ ] `get`
     - [ ] `put`
     - [ ] `post`
     - [ ] `del`
     - [ ] `match`
   - [ ] Document createLambda and use cases
-    - [ ]  cors and networking configuration
-    - [ ]  middleware
-      - [ ]  flexibility of our middleware pattern
+  - [ ]  CORS and networking configuration
+  - [ ]  Middlewares
+    - [ ]  flexibility of our middleware pattern
   - [ ]  Testing and Mocking
   - [ ]  Contributing
 - [ ] Test more negative cases
 - [ ] Split project into monorepo
+  - [ ] micron
+  - [ ] micron-mock
 
 # Authors
 - Ashley Narcisse @darkfadr
-- Kennet Postigo
+- Kennet Postigo @kennetpostigo

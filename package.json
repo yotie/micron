@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/yotie/micron.git"
   },
-  "author": "Ashley Narcisse",
+  "author": "Ashley Narcisse <@darkfadr>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/yotie/micron/issues"
