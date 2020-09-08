@@ -41,7 +41,7 @@
     "@types/test-listen": "^1.1.0",
     "jest": "^26.4.2",
     "microbundle": "next",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "test-listen": "^1.1.0"
   }
 }
