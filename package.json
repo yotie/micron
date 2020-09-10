@@ -27,7 +27,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@vercel/node": "^1.8.0",
+    "@vercel/node": "^1.8.2",
     "debug": "^4.1.1",
     "matcher": "^3.0.0",
     "request-promise": "^4.2.6"
