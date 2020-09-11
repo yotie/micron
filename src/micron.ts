@@ -41,8 +41,9 @@ const isValidMethod = (method: string = "") =>
 
 const routeType = (method: string): Micron => (fn: MicronLambda) =>
   routeHandler((params: MicronParams) => {
-    const { req, notFound } = params;
-    if (!isValidMethod(method)) return notFound();
+    const { req, res, notFound } = params;
+    if (!isValidMethod(method))
+      return res.status(405).send('Method Not Allowed');
 
     return (req.method === method && fn(params)) || notFound();
   });
@@ -66,14 +67,13 @@ export const del = routeType("DELETE");
 const actionMap: ActionMap = { get, put, post, patch, del };
 
 export const match = (actions: MatchActions): NowLambda => {
-  return routeHandler(({ req, res, notFound }) => {
+  return routeHandler(({ req, res }) => {
     const method = req.method?.toLowerCase() || '';
     const mcrn: Micron = actionMap[method];
-
-    if(!mcrn) return notFound();
-
     const lambda:NowLambda = actions[method];
-    if (!lambda) return notFound();
+
+    if(!mcrn || !lambda)
+      return res.status(405).send('Method Not Allowed');
 
     return lambda(req, res);
   });
