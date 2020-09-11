@@ -199,7 +199,7 @@ describe('micron', () => {
       expect(method).toBe('POST');
     });
 
-    it('should return 404 to missing/not configured lambda', async () => {
+    it('should return 405 to missing/not configured lambda', async () => {
       const { fetch } = await mockLambda(
         match({
           get: get(okLambda),
@@ -210,7 +210,7 @@ describe('micron', () => {
       const res = await fetch({ method: 'put' });
 
       expect(res.ok).toBe(false);
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(405);
     });
   });
 });
