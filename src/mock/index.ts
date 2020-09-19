@@ -37,5 +37,3 @@ export const mockLambda = async (fn: RequestListener): Promise<MockLambda> => {
 
   return { fetch: call, shutdown, url };
 }
-
-export default mockLambda;

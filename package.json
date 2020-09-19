@@ -1,6 +1,6 @@
 {
   "name": "@yotie/micron",
-  "version": "2.0.0-rc2",
+  "version": "2.0.0-rc3",
   "description": "A serverless micro-framework for Vercel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

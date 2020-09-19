@@ -4,7 +4,7 @@ import { NowLambda, MicronLambda, MicronParams, Micron } from './types';
 
 const log = debug('micron\t');
 
-const routeHandler: Micron = (fn): NowLambda => (req, res) => {
+export const micron: Micron = (fn): NowLambda => (req, res) => {
   try {
     const { body, query, cookies } = req;
     const ok = (data: any) => res.status(200).send(data);
@@ -40,7 +40,7 @@ const isValidMethod = (method: string = "") =>
   ["GET", "PUT", "POST", "PATCH", "DELETE"].includes(method.toUpperCase());
 
 const routeType = (method: string): Micron => (fn: MicronLambda) =>
-  routeHandler((params: MicronParams) => {
+  micron((params: MicronParams) => {
     const { req, res, notFound } = params;
     if (!isValidMethod(method))
       return res.status(405).send('Method Not Allowed');
@@ -67,7 +67,7 @@ export const del = routeType("DELETE");
 const actionMap: ActionMap = { get, put, post, patch, del };
 
 export const match = (actions: MatchActions): NowLambda => {
-  return routeHandler(({ req, res }) => {
+  return micron(({ req, res }) => {
     const method = req.method?.toLowerCase() || '';
     const mcrn: Micron = actionMap[method];
     const lambda:NowLambda = actions[method];
@@ -78,6 +78,3 @@ export const match = (actions: MatchActions): NowLambda => {
     return lambda(req, res);
   });
 };
-
-export default routeHandler;
-

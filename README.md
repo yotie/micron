@@ -72,7 +72,7 @@ $ yarn add @yotie/micron
 
 Create a simple lambda
 ```js
-import micron from '@yotie/micron';
+import { micron } from '@yotie/micron';
 
 export default micron(({ ok }: MicronParams) => {
   return ok({ success: true, hello: 'world' });
@@ -83,7 +83,7 @@ export default micron(({ ok }: MicronParams) => {
 ## API
 
 ### MicronParams
-Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers
+Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers and making it accessible via the `MicronParams` which is passed on to your functions.
 
 
 |property|type|decription|
@@ -112,9 +112,6 @@ return error({ message: 'Catastrophic Failure' });
 ```
 
 These functions accept `String, Array, Object, Buffer` as valid inputs which will become the response body.
-
-
-
 
 
 ## Micron Helpers
@@ -239,9 +236,9 @@ CorsOptions
 ## Testing
 
 ```js
-import micron, { mockLambda } from '@yotie/micron';
+import { micron, mockLambda } from '@yotie/micron';
 
-test('', async () => {
+test('Successful api behaviour scenario', async () => {
   const lambda = micron(({ ok }) => ok({ success: true }));
   const { fetch } = await mockLambda(lambda);
 
