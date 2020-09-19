@@ -21,7 +21,7 @@ const intro = (fn: NowLambda) =>
 
 
 
-interface MicronMiddleware {
+export interface MicronMiddleware {
   (fn: NowLambda): NowLambda
 }
 
