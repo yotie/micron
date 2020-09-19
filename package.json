@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@vercel/node": "^1.8.0",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "matcher": "^3.0.0",
     "request-promise": "^4.2.6"
   },
