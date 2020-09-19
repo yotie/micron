@@ -83,7 +83,7 @@ export default micron(({ ok }: MicronParams) => {
 ## API
 
 ### MicronParams
-Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers and making it accessible via
+Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers and making it accessible via the `MicronParams` which is passed on to your functions.
 
 
 |property|type|decription|
