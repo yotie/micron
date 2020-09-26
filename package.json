@@ -11,6 +11,7 @@
     "prebuild": "rm -rf ./dist",
     "build": "microbundle -o dist/index.js -f cjs,es,modern --target node --compress",
     "dev": "microbundle --target node watch",
+    "docs": "docsify serve docs",
     "test": "jest"
   },
   "repository": {
@@ -23,9 +24,6 @@
     "url": "https://github.com/yotie/micron/issues"
   },
   "homepage": "https://github.com/yotie/micron#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "dependencies": {
     "@vercel/node": "^1.8.0",
     "debug": "^4.1.1",
@@ -39,6 +37,7 @@
     "@types/jest": "^25.2.1",
     "@types/node-fetch": "^2.5.7",
     "@types/test-listen": "^1.1.0",
+    "docsify-cli": "^4.4.1",
     "jest": "^26.4.2",
     "microbundle": "next",
     "node-fetch": "^2.6.0",
