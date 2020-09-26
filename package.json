@@ -1,6 +1,6 @@
 {
   "name": "@yotie/micron",
-  "version": "2.0.0-rc3",
+  "version": "2.0.0-rc4",
   "description": "A serverless micro-framework for Vercel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,9 @@
     "prebuild": "rm -rf ./dist",
     "build": "microbundle -o dist/index.js -f cjs,es,modern --target node --compress",
     "dev": "microbundle --target node watch",
-    "test": "jest"
+    "docs": "docsify serve docs",
+    "test": "jest",
+    "prepublish": "yarn build"
   },
   "repository": {
     "type": "git",
@@ -23,11 +25,9 @@
     "url": "https://github.com/yotie/micron/issues"
   },
   "homepage": "https://github.com/yotie/micron#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "dependencies": {
     "@vercel/node": "^1.8.0",
+    "content-type": "^1.0.4",
     "debug": "^4.2.0",
     "matcher": "^3.0.0",
     "request-promise": "^4.2.6"
@@ -39,6 +39,7 @@
     "@types/jest": "^26.0.14",
     "@types/node-fetch": "^2.5.7",
     "@types/test-listen": "^1.1.0",
+    "docsify-cli": "^4.4.1",
     "jest": "^26.4.2",
     "microbundle": "next",
     "node-fetch": "^2.6.1",

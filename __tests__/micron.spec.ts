@@ -1,4 +1,4 @@
-import micron, { get, put, post, del, mockLambda, MicronLambda, match, } from '../src';
+import { micron, get, put, post, del, mockLambda, MicronLambda, match, } from '../src';
 
 
 const okLambda: MicronLambda = ({ req, body, ok }) =>

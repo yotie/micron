@@ -1,5 +1,4 @@
-import mock from '../src/mock';
-import { NowLambda } from '../src';
+import { NowLambda, mockLambda as mock } from '../src';
 
 describe('mock', () => {
   it('should successfully execute a lamda', async () => {
