@@ -1,6 +1,6 @@
 {
   "name": "@yotie/micron",
-  "version": "2.0.0-rc4",
+  "version": "2.0.0-rc5",
   "description": "A serverless micro-framework for Vercel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "dev": "microbundle --target node watch",
     "docs": "docsify serve docs",
     "test": "jest",
-    "prepublish": "yarn build"
+    "prepare": "yarn build"
   },
   "repository": {
     "type": "git",
