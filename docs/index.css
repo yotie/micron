@@ -72,8 +72,12 @@ body {
 }
 
 .app-name {
-  text-align: start !important;
-  padding: 0px 0px 0px 15px !important;
+	display: flex;
+	justify-content: center;
+}
+
+.app-name-link img {
+	height: 50px;
 }
 
 .app-nav {
@@ -155,15 +159,3 @@ pre:hover .docsify-copy-code-button {
   font-size: 0.8em !important;
   color: #7e7e7e !important;
 }
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
