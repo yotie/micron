@@ -164,12 +164,20 @@ describe('micron', () => {
     });
   });
 
+
+// const okLambda: MicronLambda = ({ req, body, ok }) =>
+//   ok({ success: true, msg: 'Test Passed', method: req.method, body });
+
   describe('match', () => {
     it('should successfully route GET requests to the get lambda', async () => {
       const { fetch } = await mockLambda(
         match({
-          get: get(okLambda),
-          post: post(okLambda)
+          get({ req, body, ok }) {
+            return ok({ success: true, msg: 'Test Passed', method: req.method, body });
+          },
+          post({ req, body, ok }) {
+            return ok({ success: true, msg: 'Test Passed', method: req.method, body });
+          }
         })
       );
 
@@ -185,8 +193,12 @@ describe('micron', () => {
     it('should successfully route POST requests to the get lambda', async () => {
       const { fetch } = await mockLambda(
         match({
-          get: get(okLambda),
-          post: post(okLambda)
+          get({ req, body, ok }) {
+            return ok({ success: true, msg: 'Test Passed', method: req.method, body });
+          },
+          post({ req, body, ok }) {
+            return ok({ success: true, msg: 'Test Passed', method: req.method, body });
+          }
         })
       );
 
@@ -202,8 +214,12 @@ describe('micron', () => {
     it('should return 405 to missing/not configured lambda', async () => {
       const { fetch } = await mockLambda(
         match({
-          get: get(okLambda),
-          post: post(okLambda)
+          get({ req, ok }) {
+            return ok({ success: true, msg: 'Test Passed', method: req.method });
+          },
+          post({ req, body, ok }) {
+            return ok({ success: true, msg: 'Test Passed', method: req.method, body });
+          }
         })
       );
 

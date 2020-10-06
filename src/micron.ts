@@ -50,7 +50,7 @@ const routeType = (method: string): Micron => (fn: MicronLambda) =>
 
 
 type MatchActions = {
-  [key: string]: NowLambda
+  [key: string]: MicronLambda
 }
 
 type ActionMap = {
@@ -70,11 +70,11 @@ export const match = (actions: MatchActions): NowLambda => {
   return micron(({ req, res }) => {
     const method = req.method?.toLowerCase() || '';
     const mcrn: Micron = actionMap[method];
-    const lambda:NowLambda = actions[method];
+    const lambda:MicronLambda = actions[method];
 
     if(!mcrn || !lambda)
       return res.status(405).send('Method Not Allowed');
 
-    return lambda(req, res);
+    return mcrn(lambda)(req, res);
   });
 };

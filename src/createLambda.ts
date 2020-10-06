@@ -19,8 +19,6 @@ const intro = (fn: NowLambda) =>
     return fn(req, res);
   };
 
-
-
 export interface MicronMiddleware {
   (fn: NowLambda): NowLambda
 }

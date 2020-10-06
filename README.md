@@ -61,10 +61,6 @@ export default createLambda(
 
 ## Getting Started
 
-Add the yotie registry to your *`.npmrc`*
-```
-@yotie:registry=https://npm.pkg.github.com
-```
 Install the package
 ```sh
 $ yarn add @yotie/micron
@@ -131,7 +127,6 @@ export default match({
     const user = await createUser(body);
     return ok(user);
   }),
-
   get(async ({query, ok, notFound}) {
     const user = await getUser(query.id);
     if(!user?.id) return notFound();
@@ -162,8 +157,8 @@ import authMiddleWare from './auth';
 
 export default createLambda(
   post(({ req, body, ok, error }) => {
-      const { user } = req.auth;
-      return ok({ success: true, body, user });
+    const { user } = req.auth;
+    return ok({ success: true, body, user });
   }),
   { middlewares: [authMiddleWare]}
 );

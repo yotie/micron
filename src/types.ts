@@ -27,7 +27,7 @@ export type MicronParams = {
 }
 
 export interface MicronLambda {
-  (parms: MicronParams): NowResponse | Promise<NowResponse>;
+  (parms: MicronParams): NowResponse | Promise<NowResponse> | Promise<void>;
 };
 
 export interface Micron {
