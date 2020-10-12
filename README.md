@@ -1,25 +1,35 @@
 <br />
 <p align="center">
-  <!-- <img src="docs/logo.png" alt="Logo" width="250" height="250"> -->
+  <img src="docs/assets/logo.png" alt="Logo" style="margin-bottom: 50px">
+<p align="center">
 
-  <h1 align="center">
-    <em>μm</em>
-  </h1>
-  <h3 align="center">micron</h3>
+> A micro framework that sits neatly on top of @vercel/now for creating hyper-expresive lambdas.
 
-  <p align="center">
-
-> A micro http framework that sits neatly on top of @vercel/now for creating hyper-expresive lambdas.
-
-Vercel is nice, but writing production-ready lambda services can require quite a bit of boilerplate. __micron__ is here to help improve that experienceby providing powerful helpers that allow you to create expressive and composable lambdas.
+Writing production-ready lambda services can require quite a bit of boilerplate. __micron__ is here to help improve that experience by providing powerful helpers that allow you to create expressive and hyper-composable serverless functions.
   </p>
 </p>
 
 <br/>
-<br/>
-<br/>
 
-## Usage
+## Getting Started
+
+### Setup
+Install the package
+```sh
+$ yarn add @yotie/micron
+```
+
+Create a simple lambda
+```js
+import { micron } from '@yotie/micron';
+
+export default micron(({ ok }: MicronParams) => {
+  return ok({ success: true, hello: 'world' });
+});
+```
+
+
+### Example Usage
 **BEFORE MICRON**
 ```ts
 import checkAuth from './checkAuth';
@@ -27,7 +37,7 @@ import checkAuth from './checkAuth';
 export default function(req: NowRequest, res: NowResponse) {
   try {
     if (!req.method.toUpperCase().equals('POST'))
-      return res.status(404).send('Not Found');
+      return res.status(405).send('Method Unsupported');
 
     const auth = checkAuth(req.headers['Authorization']);
     if (!auth.isValid) return res.status(401).send('Unauthorized');
@@ -58,28 +68,24 @@ export default createLambda(
   { middlewares: [authMiddleWare, ...moreMiddleWare]}
 );
 ```
-
-## Getting Started
-
-Install the package
-```sh
-$ yarn add @yotie/micron
-```
-
-Create a simple lambda
-```js
-import { micron } from '@yotie/micron';
-
-export default micron(({ ok }: MicronParams) => {
-  return ok({ success: true, hello: 'world' });
-});
-```
-
+> __micron__ improves the signal-to-noise ratio in your code which increases it readability, while providing extension po
 
 ## API
 
 ### MicronParams
-Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers and making it accessible via the `MicronParams` which is passed on to your functions.
+Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers, making it accessible via the `MicronParams` which is passed on to your functions. While leveraging __*micron*__, your serverless functions will change from the default method signature:
+```js
+(req: IncomingMessage, res: ServerResponse) => res
+```
+to leveraging the `MicronLambda` function signature:
+```js
+(params: MicronParams) => res: ServerResponse
+```
+
+
+
+Here is a complete list of all the properties and
+
 
 
 |property|type|decription|
@@ -90,6 +96,7 @@ Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#offi
 |cookies | `NowRequestCookies` | An object containing the cookies sent by the request|
 |query | `NowRequestQuery` | An object containing the request's query string|
 |ok | `ResponseHelper` | Returns a __200__ HTTP response with your payload|
+|brotli | `ResponseHelper` | Returns a __200__ HTTP response with your payload compressed in `br` encoding|
 |badRequest | `ResponseHelper`| Returns a __400__ HTTP response with your payload|
 |unauthorized| `ResponseHelper`| Returns a __401__ HTTP response with your payload|
 |notFound |`ResponseHelper`|  Returns a __404__ HTTP response with your payload|
@@ -107,12 +114,22 @@ return res.status(500).json({ message: 'Catastrophic Failure' });
 return error({ message: 'Catastrophic Failure' });
 ```
 
-These functions accept `String, Array, Object, Buffer` as valid inputs which will become the response body.
+These functions accept `String, Array, Object, Buffer` as valid inputs which will be passed on as the response body.
 
 
-## Micron Helpers
+## Micron Functions
+
 
 ### micron
+
+In order to leverage the above __MicronParams__, you need to declare a micron lambda and the simplest way of doing so is with the `micron` helper. Instead of
+```js
+export default micron(({ ok }: MicronParams) => {
+  return ok({ success: true });
+});
+```
+
+
 ### get
 ### post
 ### put
@@ -248,6 +265,7 @@ test('Successful api behaviour scenario', async () => {
 
 
 ## TODO
+- [x] Create Logo
 - [ ] Create banner
 - [ ] Documentation
   - [x] Improve intro and Getting started ✅
