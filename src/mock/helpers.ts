@@ -205,6 +205,7 @@ function json(req: NowRequest, res: NowResponse, jsonBody: any): NowResponse {
   return send(req, res, body);
 }
 
+/** @internal */
 export class ApiError extends Error {
   readonly statusCode: number;
 
@@ -214,6 +215,7 @@ export class ApiError extends Error {
   }
 }
 
+/** @internal */
 export function sendError(
   res: NowResponse,
   statusCode: number,
@@ -224,6 +226,7 @@ export function sendError(
   res.end();
 }
 
+/** @internal */
 export function createServerWithHelpers(
   handler: (req: NowRequest, res: NowResponse) => void | Promise<void>
 ) {

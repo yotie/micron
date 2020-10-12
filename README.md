@@ -70,6 +70,15 @@ export default createLambda(
 ```
 > __micron__ improves the signal-to-noise ratio in your code which increases it readability, while providing extension po
 
+## Motivations
+Talks about some of the boilerplate and noise that typically get injected into lambda serverless function. mention how we're leveraging currying and functional composition which allows us to cleanly issolate and re-use various portions of our code and easily extend the functionality of our lambdas.  In the process of doing so, we also substantially improve the readability of our services while desing our functionality into highly cohesive and loosely coupled lambdas. The ultimate goal behind micron is to build a library that can be used to the build serverless functions on any serverles provider.
+
+While we currently support Vercel, our patterns should be compatible with AWS Lambda, Netlify, Firebase Functions, Toast<sup>beta</sup>, and many more.
+
+<br/>
+
+![diagram](docs/assets/diagram.png)
+
 ## API
 
 ### MicronParams
@@ -136,6 +145,7 @@ export default micron(({ ok }: MicronParams) => {
 ### del
 ### match
 
+#### Usage
 ```js
 import { get, post, match } from '@yotie/micron';
 
@@ -156,18 +166,48 @@ export default match({
 
 
 ## createLambda
+▸ **createLambda**(`service`: NowLambda, `opts`: [LambdaOptions](_src_createlambda_.md#lambdaoptions)): NowLambda
 
+
+### Parameters:
+
+Name | Type | Default value |
+------ | ------ | ------ |
+`service` | NowLambda | - |
+`opts` | LambdaOptions | see defaults for *LambdaOptions*|
+
+**Returns:** NowLambda
+
+
+### LambdaOptions
+
+```ts
+Ƭ LambdaOptions: { cors?: CorsOptions ; middlewares?: MicronMiddleware  }
 ```
-createLambda(
-  lambda: NowLambda,
-  {
-    cors: CorsOptions,
-    middlewares: MicronMiddleware[]
-  }
 
-)
-```
 
+#### Type declaration:
+
+Name | Type | Default value |
+------ | ------ | ------ |
+`cors?` | CorsOptions | see defaults for *CorsOptions* |
+`middlewares?` | [MicronMiddleware](../interfaces/_src_createlambda_.micronmiddleware.md)[] | [] |
+
+<br/>
+
+### CorsOptions
+|Parameter| type | default | Description|
+|---------|------|---------|------------|
+|origin| `string` | * | |
+|maxAge| `Number` | 86400 | |
+|allowMethods | `string[]` | [GET, PUT, POST, PATCH, DELETE, OPTIONS] | |
+|allowHeaders| `string[]`| [ X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept]| |
+|allowCredentials | `Boolean` | true | |
+|exposeHeaders| `string[]`| []| |
+
+> Note: the origin can support multiple domains being set as well as glob patters
+
+### Usage
 ```js
 import { createLambda, post } from '@yotie/micron';
 import authMiddleWare from './auth';
@@ -180,6 +220,7 @@ export default createLambda(
   { middlewares: [authMiddleWare]}
 );
 ```
+
 
 
 ## Middlewares
@@ -229,20 +270,6 @@ const auth = (lambda: NowLambda) => {
 
 ```
 
-## CORS
-
-CorsOptions
-|Parameter| type | default | Description|
-|---------|------|---------|------------|
-|origin| `string` | * | |
-|maxAge| `Number` | 86400 | |
-|allowMethods | `string[]` | [GET, PUT, POST, PATCH, DELETE, OPTIONS] | |
-|allowHeaders| `string[]`| [ X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept]| |
-|allowCredentials | `Boolean` | true | |
-|exposeHeaders| `string[]`| []| |
-
-> Note: the origin can support multiple domains being set as well as glob patters
-
 
 
 ## Testing
@@ -269,16 +296,17 @@ test('Successful api behaviour scenario', async () => {
 - [ ] Create banner
 - [ ] Documentation
   - [x] Improve intro and Getting started ✅
+  - [ ] Motivation and design principles 🚧
   - [x] Complete list of helpers from MicronParams ✅
   - [ ] MicronHelpers and their scenarios 🚧
-    - [ ] `micron`
+    - [ ] `micron`🚧
     - [ ] `get`
     - [ ] `put`
     - [ ] `post`
     - [ ] `del`
     - [ ] `match`
-  - [ ] Document createLambda and use cases
-  - [ ]  CORS and networking configuration
+  - [ ] Document createLambda and use cases🚧
+  - [x]  CORS and networking configuration✅
   - [ ]  Middlewares
     - [ ]  flexibility of our middleware pattern
   - [ ]  Testing and Mocking

@@ -2,6 +2,7 @@ import debug from 'debug';
 import { compress } from './brotli';
 import { NowLambda, MicronLambda, MicronParams, Micron } from './types';
 
+// @internal
 const log = debug('micron\t');
 
 export const micron: Micron = (fn): NowLambda => (req, res) => {
@@ -36,9 +37,11 @@ export const micron: Micron = (fn): NowLambda => (req, res) => {
   }
 };
 
+// @internal
 const isValidMethod = (method: string = "") =>
   ["GET", "PUT", "POST", "PATCH", "DELETE"].includes(method.toUpperCase());
 
+// @internal
 const routeType = (method: string): Micron => (fn: MicronLambda) =>
   micron((params: MicronParams) => {
     const { req, res, notFound } = params;
@@ -53,6 +56,7 @@ type MatchActions = {
   [key: string]: MicronLambda
 }
 
+// @internal
 type ActionMap = {
   [key: string]: Micron
 }
@@ -64,6 +68,7 @@ export const post = routeType("POST");
 export const patch = routeType("PATCH");
 export const del = routeType("DELETE");
 
+// @internal
 const actionMap: ActionMap = { get, put, post, patch, del };
 
 export const match = (actions: MatchActions): NowLambda => {
