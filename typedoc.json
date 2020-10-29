@@ -1,0 +1,9 @@
+{
+  "inputFiles": ["./src/index.ts", "./src/types.tc", "./src/micron.ts", "src/createLambda.ts", "src/mock/index.ts"],
+  "mode": "modules",
+  "out": "docs/",
+  "stripInternal": true,
+  "excludeExternals": true,
+  "includeDeclarations": true,
+  "disableOutputCheck": true
+}

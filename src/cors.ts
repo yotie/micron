@@ -33,7 +33,7 @@ const cors = (options: CorsOptions = {}) => (fn: NowLambda): NowLambda =>
       exposeHeaders = []
     } = options || {};
 
-    if (res && res.finished) return res;
+    if (res && res.writableEnded) return res;
 
     const protocol = req.headers['x-forwarded-proto'];
     const host = req.headers['x-forwarded-host'];

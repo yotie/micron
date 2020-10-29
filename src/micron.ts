@@ -2,6 +2,7 @@ import debug from 'debug';
 import { compress } from './brotli';
 import { NowLambda, MicronLambda, MicronParams, Micron } from './types';
 
+// @internal
 const log = debug('micron\t');
 
 export const micron: Micron = (fn): NowLambda => (req, res) => {
@@ -36,9 +37,11 @@ export const micron: Micron = (fn): NowLambda => (req, res) => {
   }
 };
 
+// @internal
 const isValidMethod = (method: string = "") =>
   ["GET", "PUT", "POST", "PATCH", "DELETE"].includes(method.toUpperCase());
 
+// @internal
 const routeType = (method: string): Micron => (fn: MicronLambda) =>
   micron((params: MicronParams) => {
     const { req, res, notFound } = params;
@@ -50,9 +53,10 @@ const routeType = (method: string): Micron => (fn: MicronLambda) =>
 
 
 type MatchActions = {
-  [key: string]: NowLambda
+  [key: string]: MicronLambda
 }
 
+// @internal
 type ActionMap = {
   [key: string]: Micron
 }
@@ -64,17 +68,18 @@ export const post = routeType("POST");
 export const patch = routeType("PATCH");
 export const del = routeType("DELETE");
 
+// @internal
 const actionMap: ActionMap = { get, put, post, patch, del };
 
 export const match = (actions: MatchActions): NowLambda => {
   return micron(({ req, res }) => {
     const method = req.method?.toLowerCase() || '';
     const mcrn: Micron = actionMap[method];
-    const lambda:NowLambda = actions[method];
+    const lambda:MicronLambda = actions[method];
 
     if(!mcrn || !lambda)
       return res.status(405).send('Method Not Allowed');
 
-    return lambda(req, res);
+    return mcrn(lambda)(req, res);
   });
 };

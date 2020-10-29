@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse, NowRequestBody, NowRequestCookies, NowRequestQuery } from '@vercel/node';
 
 export interface NowLambda {
-  (req: NowRequest, res: NowResponse): NowResponse | Promise<NowResponse>;
+  (req: NowRequest, res: NowResponse): NowResponse | Promise<NowResponse> | Promise<void>;
 };
 
 export interface ResponseHelper {
@@ -27,7 +27,7 @@ export type MicronParams = {
 }
 
 export interface MicronLambda {
-  (parms: MicronParams): NowResponse | Promise<NowResponse>;
+  (parms: MicronParams): NowResponse | Promise<NowResponse> | Promise<void>;
 };
 
 export interface Micron {

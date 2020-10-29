@@ -3,8 +3,12 @@ import { NowRequest, NowResponse } from '@vercel/node';
 import { NowLambda,  } from './micron';
 import cors, { CorsOptions } from './cors';
 
+// @internal
 const log = debug('micron:createLambda');
 
+// TIP: composition is a powerfull construct that micron leverages heavily,
+// Learn more: https://mostly-adequate.gitbooks.io/mostly-adequate-guide/content/ch05.html
+// @internal
 const compose = (...fns: any[]) =>
   fns.reduce((f, g) =>
     (...args: any[]) => f(g && g(...args) || f(...args)), // Allow falsey functions to be passed in, by passing over them
@@ -12,6 +16,7 @@ const compose = (...fns: any[]) =>
     (fn: NowLambda) => async (req: NowRequest, res: NowResponse) => fn(req, res)
   );
 
+// @internal
 const intro = (fn: NowLambda) =>
   (req: NowRequest, res: NowResponse) => {
     log("🚀 Launching micron lambda...");
@@ -19,13 +24,11 @@ const intro = (fn: NowLambda) =>
     return fn(req, res);
   };
 
-
-
 export interface MicronMiddleware {
   (fn: NowLambda): NowLambda
 }
 
-type LambdaOptions = {
+export type LambdaOptions = {
   cors?: CorsOptions,
   middlewares?: MicronMiddleware[]
 }
