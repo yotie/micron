@@ -1,6 +1,6 @@
 import debug from 'debug';
 import matcher from 'matcher';
-import { NowLambda } from './micron';
+import { Lambda } from './types';
 
 const log = debug('micron:cors');
 const DEFAULT_ALLOW_METHODS = [ 'POST', 'GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS' ];
@@ -22,7 +22,7 @@ export type CorsOptions = {
   exposeHeaders?: string[]
 }
 
-const cors = (options: CorsOptions = {}) => (fn: NowLambda): NowLambda =>
+const cors = (options: CorsOptions = {}) => (fn: Lambda): Lambda =>
   (req, res) => {
     const {
       origin = '*',

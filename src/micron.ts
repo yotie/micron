@@ -1,11 +1,11 @@
 import debug from 'debug';
 import { compress } from './brotli';
-import { NowLambda, MicronLambda, MicronParams, Micron } from './types';
+import { Lambda, MicronLambda, MicronParams, Micron } from './types';
 
 // @internal
 const log = debug('micron\t');
 
-export const micron: Micron = (fn): NowLambda => (req, res) => {
+export const micron: Micron = (fn): Lambda => (req, res) => {
   log('🚀 Launching micron lambda...\n🔗 Endpoint: ', req.url);
   try {
     const { body, query, cookies } = req;
@@ -64,7 +64,6 @@ type ActionMap = {
   [key: string]: Micron
 }
 
-export * from './types';
 export const get = routeType("GET");
 export const put = routeType("PUT");
 export const post = routeType("POST");
@@ -74,7 +73,7 @@ export const del = routeType("DELETE");
 // @internal
 const actionMap: ActionMap = { get, put, post, patch, del };
 
-export const match = (actions: MatchActions): NowLambda => {
+export const match = (actions: MatchActions): Lambda => {
   return micron(({ req, res }) => {
     const method = req.method?.toLowerCase() || '';
     const mcrn: Micron = actionMap[method];

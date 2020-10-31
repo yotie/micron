@@ -1,11 +1,12 @@
 <br />
 <p align="center">
-  <img src="docs/assets/logo.png" alt="Logo" style="margin-bottom: 50px">
-<p align="center">
+  <img src="https://yotie.github.io/micron/assets/logo.svg" alt="Logo" style="margin-bottom: 50px">
+<p/>
 
-> A micro framework that sits neatly on top of @vercel/now for creating hyper-expresive lambdas.
 
-Writing production-ready lambda services can require quite a bit of boilerplate. __micron__ is here to help improve that experience by providing powerful helpers that allow you to create expressive and hyper-composable serverless functions.
+> A micro-framework for creating expressive and hyper-composable lambdas.
+
+Writing production-ready lambda services can require quite a bit of boilerplate. __micron__ is here to help improve that experience by providing powerful helpers that allow you to create expressive and hyper-composable serverless functions. This was designed to work seamlessly on [Vercel](https://vercel.app).
   </p>
 </p>
 
@@ -29,7 +30,7 @@ export default micron(({ ok }: MicronParams) => {
 ```
 
 
-### Example Usage
+### Example Usage with contrast
 **BEFORE MICRON**
 ```ts
 import checkAuth from './checkAuth';
@@ -68,23 +69,23 @@ export default createLambda(
   { middlewares: [authMiddleWare, ...moreMiddleWare]}
 );
 ```
-> __micron__ improves the signal-to-noise ratio in your code which increases it readability, while providing extension po
+> __micron__ improves the signal-to-noise ratio in your code which increases it readability, while reducing duplication and boilerplate.
 
-## Motivations
+<!-- ## Motivations
 Talks about some of the boilerplate and noise that typically get injected into lambda serverless function. mention how we're leveraging currying and functional composition which allows us to cleanly issolate and re-use various portions of our code and easily extend the functionality of our lambdas.  In the process of doing so, we also substantially improve the readability of our services while desing our functionality into highly cohesive and loosely coupled lambdas. The ultimate goal behind micron is to build a library that can be used to the build serverless functions on any serverles provider.
 
 While we currently support Vercel, our patterns should be compatible with AWS Lambda, Netlify, Firebase Functions, Toast<sup>beta</sup>, and many more.
 
 <br/>
 
-![diagram](docs/assets/diagram.png)
+![diagram](docs/assets/diagram.png) -->
 
 ## API
 
-### MicronParams
+### `Type: MicronParams`
 Vercel provides a [useful list of helpers](https://vercel.com/docs/runtimes#official-runtimes/node-js/node-js-request-and-response-objects/node-js-helpers) inside of the Request and Response objects passed to the lambda. We've enhanced the experience a bit more by including an additional set of helpers, making it accessible via the `MicronParams` which is passed on to your functions. While leveraging __*micron*__, your serverless functions will change from the default method signature:
 ```js
-(req: IncomingMessage, res: ServerResponse) => res
+(req: IncomingMessage, res: ServerResponse) => res: ServerResponse
 ```
 to leveraging the `MicronLambda` function signature:
 ```js
@@ -93,17 +94,15 @@ to leveraging the `MicronLambda` function signature:
 
 
 
-Here is a complete list of all the properties and
+Here is a complete list of all the properties contained in the `MicronParams`:
 
-
-
-|property|type|decription|
+|Property|Type|Decription|
 |------|----|----------|
-|req | `NowRequest` | The incoming Request object |
-|res | `NowResponse` | The outgoing Response object|
-|body | `NowRequestBody` | An object containing the body sent by the request|
-|cookies | `NowRequestCookies` | An object containing the cookies sent by the request|
-|query | `NowRequestQuery` | An object containing the request's query string|
+|req | `Request` | The incoming Request object |
+|res | `Response` | The outgoing Response object|
+|body | `RequestBody` | An object containing the body sent by the request|
+|cookies | `RequestCookies` | An object containing the cookies sent by the request|
+|query | `RequestQuery` | An object containing the request's query string|
 |ok | `ResponseHelper` | Returns a __200__ HTTP response with your payload|
 |brotli | `ResponseHelper` | Returns a __200__ HTTP response with your payload compressed in `br` encoding|
 |badRequest | `ResponseHelper`| Returns a __400__ HTTP response with your payload|
@@ -126,68 +125,127 @@ return error({ message: 'Catastrophic Failure' });
 These functions accept `String, Array, Object, Buffer` as valid inputs which will be passed on as the response body.
 
 
-## Micron Functions
 
+### `micron(fn)`
+The simplest way of creating a lambda is with the `micron` helper. This wraps your function in a global exception handler and will add light-weight request logging capabilites.
 
-### micron
-
-In order to leverage the above __MicronParams__, you need to declare a micron lambda and the simplest way of doing so is with the `micron` helper. Instead of
+#### Usage
 ```js
-export default micron(({ ok }: MicronParams) => {
+export default micron(({ req, ok }: MicronParams) => {
+  return ok({
+    success: true,
+    requestType: req.method
+  });
+});
+```
+> Note: lambdas created with the `micron` function accept requests from any HTTP method type. To restrict the HTTP method that your lambda allows, use one of the following: [get](#getfn), [post](#postfn), [put](#putfn), [patch](#patchfn), [del](#delfn)
+
+
+### `get(fn)`
+#### Usage
+```js
+import { get } from '@yotie/micron';
+
+export default get(({ ok }) => {
   return ok({ success: true });
 });
 ```
 
 
-### get
-### post
-### put
-### del
-### match
-
+### `post(fn)`
 #### Usage
 ```js
+import { post } from '@yotie/micron';
+
+export default post(({ body, ok }) => {
+  return ok({ success: true, payload: body });
+});
+```
+
+
+### `put(fn)`
+#### Usage
+```js
+import { put } from '@yotie/micron';
+
+export default put(({ ok }) => {
+  return ok({ success: true });
+});
+```
+
+
+### `patch(fn)`
+#### Usage
+```js
+import { patch } from '@yotie/micron';
+
+export default patch(({ ok }) => {
+  return ok({ success: true });
+});
+```
+
+
+### `del(fn)`
+#### Usage
+```js
+import { del } from '@yotie/micron';
+
+export default del(({ ok }) => {
+  return ok({ success: true });
+});
+```
+
+### `match({})`
+
+#### Usage
+```ts
 import { get, post, match } from '@yotie/micron';
 
 export default match({
-  post(async ({ body, ok, error}) {
+  async post({ body, ok, error }) {
     const user = await createUser(body);
     return ok(user);
-  }),
-  get(async ({query, ok, notFound}) {
+  },
+  async get({ query, ok, notFound }) {
     const user = await getUser(query.id);
     if(!user?.id) return notFound();
 
     return ok(user);
-  })
+  }
 })
 ```
 
 
 
-## createLambda
-▸ **createLambda**(`service`: NowLambda, `opts`: [LambdaOptions](_src_createlambda_.md#lambdaoptions)): NowLambda
+### `createLambda(fn, opts)`
+#### Usage
+```ts
+import { get } from '@yotie/micron';
+import { traceMiddleware, } from './middlewares';
 
 
-### Parameters:
+export default createLambda(
+  get(({ ok }) => {
+    // some business logic here
+    return ok({ success: true })
+  }),
+  {
+    cors: { origin: 'https://example.com, http://localhost:3000' }
+    middlewares: [traceMiddleware]
+  }
+);
+```
 
+#### __Parameters__
 Name | Type | Default value |
 ------ | ------ | ------ |
 `service` | NowLambda | - |
 `opts` | LambdaOptions | see defaults for *LambdaOptions*|
 
-**Returns:** NowLambda
+<br/>
 
 
-### LambdaOptions
-
-```ts
-Ƭ LambdaOptions: { cors?: CorsOptions ; middlewares?: MicronMiddleware  }
-```
-
-
-#### Type declaration:
-
+#### __LambdaOptions__
 Name | Type | Default value |
 ------ | ------ | ------ |
 `cors?` | CorsOptions | see defaults for *CorsOptions* |
@@ -195,7 +253,7 @@ Name | Type | Default value |
 
 <br/>
 
-### CorsOptions
+#### __CorsOptions__
 |Parameter| type | default | Description|
 |---------|------|---------|------------|
 |origin| `string` | * | |
@@ -207,20 +265,7 @@ Name | Type | Default value |
 
 > Note: the origin can support multiple domains being set as well as glob patters
 
-### Usage
-```js
-import { createLambda, post } from '@yotie/micron';
-import authMiddleWare from './auth';
-
-export default createLambda(
-  post(({ req, body, ok, error }) => {
-    const { user } = req.auth;
-    return ok({ success: true, body, user });
-  }),
-  { middlewares: [authMiddleWare]}
-);
-```
-
+---
 
 
 ## Middlewares
@@ -292,29 +337,35 @@ test('Successful api behaviour scenario', async () => {
 
 
 ## TODO
-- [x] Create Logo
-- [ ] Create banner
+- [x] Create Logo ✅
+- [x] Create banner ✅
 - [ ] Documentation
   - [x] Improve intro and Getting started ✅
   - [ ] Motivation and design principles 🚧
   - [x] Complete list of helpers from MicronParams ✅
   - [ ] MicronHelpers and their scenarios 🚧
-    - [ ] `micron`🚧
-    - [ ] `get`
-    - [ ] `put`
-    - [ ] `post`
-    - [ ] `del`
-    - [ ] `match`
-  - [ ] Document createLambda and use cases🚧
+    - [x] `micron` ✅
+    - [ ] `get` 🚧
+    - [ ] `put` 🚧
+    - [ ] `post` 🚧
+    - [ ] `del` 🚧
+    - [ ] `match` 🚧
+  - [ ] Document createLambda and use cases 🚧
   - [x]  CORS and networking configuration✅
-  - [ ]  Middlewares
+  - [ ]  Middlewares 🚧
     - [ ]  flexibility of our middleware pattern
   - [ ]  Testing and Mocking
+    - [ ]  add query params serialization
   - [ ]  Contributing
 - [ ] Test more negative cases
+- [ ] Add file upload support
 - [ ] Split project into monorepo
   - [ ] micron
   - [ ] micron-mock
+  - [ ] micron-vercel
+  - [ ] micron-netlify
+  - [ ] micron-middleware-auth0
+  - [ ] micron-middleware-magiclink
 
 # Authors
 - Ashley Narcisse @darkfadr
