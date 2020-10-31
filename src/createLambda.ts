@@ -1,4 +1,3 @@
-import debug from 'debug';
 import { NowRequest, NowResponse } from '@vercel/node';
 import { NowLambda,  } from './micron';
 import cors, { CorsOptions } from './cors';
