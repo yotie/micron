@@ -1,9 +1,6 @@
 name: Package & Distribute
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
     branches:
       - master

@@ -41,6 +41,7 @@ const cors = (options: CorsOptions = {}) => (fn: NowLambda): NowLambda =>
       || req.headers['referer']?.toString()
       || `${protocol}://${host}`;
 
+    log('Incoming request from: ', requestor);
     const [domain=''] = matcher([requestor], origin.split(', '));
     if (!domain) {
       log('🛑 Request is coming from an unathorized origin', `${requestor}`);
@@ -54,6 +55,7 @@ const cors = (options: CorsOptions = {}) => (fn: NowLambda): NowLambda =>
       res.setHeader('Access-Control-Expose-Headers', exposeHeaders.join(','));
 
     if (req.method === 'OPTIONS') {
+      log('Handling OPTIONS pre-flight check')
       res.setHeader('Access-Control-Allow-Methods', allowMethods.join(','));
       res.setHeader('Access-Control-Allow-Headers', allowHeaders.join(','));
       res.setHeader('Access-Control-Max-Age', String(maxAge));

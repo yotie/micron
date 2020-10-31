@@ -6,6 +6,7 @@ import { NowLambda, MicronLambda, MicronParams, Micron } from './types';
 const log = debug('micron\t');
 
 export const micron: Micron = (fn): NowLambda => (req, res) => {
+  log('🚀 Launching micron lambda...\n🔗 Endpoint: ', req.url);
   try {
     const { body, query, cookies } = req;
     const ok = (data: any) => res.status(200).send(data);
@@ -45,8 +46,10 @@ const isValidMethod = (method: string = "") =>
 const routeType = (method: string): Micron => (fn: MicronLambda) =>
   micron((params: MicronParams) => {
     const { req, res, notFound } = params;
-    if (!isValidMethod(method))
+    if (!isValidMethod(method)) {
+      log(`🙅🏽 Method '${req.method}' Not Allowed`);
       return res.status(405).send('Method Not Allowed');
+    }
 
     return (req.method === method && fn(params)) || notFound();
   });
@@ -77,8 +80,10 @@ export const match = (actions: MatchActions): NowLambda => {
     const mcrn: Micron = actionMap[method];
     const lambda:MicronLambda = actions[method];
 
-    if(!mcrn || !lambda)
+    if(!mcrn || !lambda) {
+      log(`🙅🏽 Method '${method}' Not Defined in match()`)
       return res.status(405).send('Method Not Allowed');
+    }
 
     return mcrn(lambda)(req, res);
   });

@@ -16,14 +16,6 @@ const compose = (...fns: any[]) =>
     (fn: NowLambda) => async (req: NowRequest, res: NowResponse) => fn(req, res)
   );
 
-// @internal
-const intro = (fn: NowLambda) =>
-  (req: NowRequest, res: NowResponse) => {
-    log("🚀 Launching micron lambda...");
-    log('🔗 Endpoint: ', req.url);
-    return fn(req, res);
-  };
-
 export interface MicronMiddleware {
   (fn: NowLambda): NowLambda
 }
@@ -35,6 +27,6 @@ export type LambdaOptions = {
 
 export function createLambda(service: NowLambda, opts: LambdaOptions = {}): NowLambda {
   const { cors: corsOptions, middlewares=[] } = opts;
-  const baseMiddleware = [cors(corsOptions), intro];
+  const baseMiddleware = [cors(corsOptions)];
   return compose(...baseMiddleware, ...middlewares)(service);
 }
