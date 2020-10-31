@@ -3,9 +3,6 @@ import { NowRequest, NowResponse } from '@vercel/node';
 import { NowLambda,  } from './micron';
 import cors, { CorsOptions } from './cors';
 
-// @internal
-const log = debug('micron:createLambda');
-
 // TIP: composition is a powerfull construct that micron leverages heavily,
 // Learn more: https://mostly-adequate.gitbooks.io/mostly-adequate-guide/content/ch05.html
 // @internal
