@@ -1,6 +1,6 @@
 {
   "name": "@yotie/micron",
-  "version": "2.0.0-rc7.1",
+  "version": "2.0.0",
   "description": "A hyper-composble micro-framework for serverless functions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

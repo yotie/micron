@@ -1,10 +1,11 @@
 <br />
 <p align="center">
   <img src="https://yotie.github.io/micron/assets/logo.svg" alt="Logo" style="margin-bottom: 50px">
+  <br/>
+  <em>A micro-framework for creating expressive and hyper-composable lambdas.</em>
 <p/>
 
-
-> A micro-framework for creating expressive and hyper-composable lambdas.
+<br/><br/>
 
 Writing production-ready lambda services can require quite a bit of boilerplate. __micron__ is here to help improve that experience by providing powerful helpers that allow you to create expressive and hyper-composable serverless functions. This was designed to work seamlessly on [Vercel](https://vercel.app).
   </p>
@@ -35,7 +36,7 @@ export default micron(({ ok }: MicronParams) => {
 ```ts
 import checkAuth from './checkAuth';
 
-export default function(req: NowRequest, res: NowResponse) {
+export default function(req: Request, res: Response) {
   try {
     if (!req.method.toUpperCase().equals('POST'))
       return res.status(405).send('Method Unsupported');
@@ -277,24 +278,25 @@ Middleware functions are functions that have access to the request object (req) 
 
 > Note: Middlewares must have the following signature `fn => (req, res) => fn(req, res)`
 
+### `createMiddleware(fn, next)`
+
+#### Usage
 ```js
-import { createLambda } from '@yotie/micron'
-import authMiddleWare from './auth'
+import { createMiddleware } from '@yotie/micron';
 
-const bodyLogger = lambda => {
-  return (req, res) => {
-    console.log('Incoming payload', req.body);
-    return lambda(req, res);
-  }
-}
+export const auth = createMiddleware(({ req, unauthorized }, next) => {
+  const token = req.headers['Authorization'];
+  if (!token) return unauthorized();
 
-export default createLambda(
-  get(({ ok}) => ok({ success: true })),
-  { middlewares: [authMiddleWare, bodyLogger] }
-);
+  req.auth = { user: 'exampleUser' }
+  console.log('User is allowed to access this lambda');
+
+  return next();
+});
 ```
 
-You can also use micron to build out your middlewares.
+
+You can also use the micron helper to build out your middlewares w/o using the `createMiddleware` helper.
 
 ```js
 //auth.js
@@ -315,7 +317,7 @@ const auth = (lambda: NowLambda) => {
 
 ```
 
-
+---
 
 ## Testing
 
