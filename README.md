@@ -200,7 +200,7 @@ export default del(({ ok }) => {
 
 #### Usage
 ```ts
-import { get, post, match } from '@yotie/micron';
+import { match } from '@yotie/micron';
 
 export default match({
   async post({ body, ok, error }) {
@@ -228,10 +228,10 @@ import { traceMiddleware, } from './middlewares';
 export default createLambda(
   get(({ ok }) => {
     // some business logic here
-    return ok({ success: true })
+    return ok({ success: true });
   }),
   {
-    cors: { origin: 'https://example.com, http://localhost:3000' }
+    cors: { origin: 'https://example.com, http://localhost:3000' },
     middlewares: [traceMiddleware]
   }
 );
@@ -240,7 +240,7 @@ export default createLambda(
 #### __Parameters__
 Name | Type | Default value |
 ------ | ------ | ------ |
-`service` | NowLambda | - |
+`fn` | Lambda | - |
 `opts` | LambdaOptions | see defaults for *LambdaOptions*|
 
 <br/>
@@ -253,6 +253,9 @@ Name | Type | Default value |
 `middlewares?` | [MicronMiddleware](../interfaces/_src_createlambda_.micronmiddleware.md)[] | [] |
 
 <br/>
+
+---
+## CORS
 
 #### __CorsOptions__
 |Parameter| type | default | Description|
@@ -276,8 +279,6 @@ Middleware functions are functions that have access to the request object (req) 
 - Make changes to the request and the response objects.
 - End the request-response cycle, example: `return badRequest();`
 
-> Note: Middlewares must have the following signature `fn => (req, res) => fn(req, res)`
-
 ### `createMiddleware(fn, next)`
 
 #### Usage
@@ -295,8 +296,8 @@ export const auth = createMiddleware(({ req, unauthorized }, next) => {
 });
 ```
 
-
 You can also use the micron helper to build out your middlewares w/o using the `createMiddleware` helper.
+> Note: Middlewares must have the following signature `fn => (req, res) => fn(req, res)`
 
 ```js
 //auth.js
@@ -328,7 +329,7 @@ test('Successful api behaviour scenario', async () => {
   const lambda = micron(({ ok }) => ok({ success: true }));
   const { fetch } = await mockLambda(lambda);
 
-  const res = await fetch();
+  const res = await fetch('?q=searchQuery');
   const { success } = await res.json();
 
   expect(res.ok).toBe(true);
@@ -353,11 +354,11 @@ test('Successful api behaviour scenario', async () => {
     - [ ] `del` 🚧
     - [ ] `match` 🚧
   - [ ] Document createLambda and use cases 🚧
-  - [x]  CORS and networking configuration✅
+  - [x]  CORS and networking configuration ✅
   - [ ]  Middlewares 🚧
-    - [ ]  flexibility of our middleware pattern
+    - [x]  flexibility of our middleware pattern ✅
   - [ ]  Testing and Mocking
-    - [ ]  add query params serialization
+    - [x]  add query params serialization ✅
   - [ ]  Contributing
 - [ ] Test more negative cases
 - [ ] Add file upload support
