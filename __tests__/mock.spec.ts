@@ -1,8 +1,8 @@
-import { NowLambda, mockLambda as mock } from '../src';
+import { Lambda, mockLambda as mock } from '../src';
 
 describe('mock', () => {
   it('should successfully execute a lamda', async () => {
-    const lambda: NowLambda = (_, res) =>
+    const lambda: Lambda = (_, res) =>
       res.status(200).json({ success: true});
 
     const { fetch } = await mock(lambda);
@@ -15,7 +15,7 @@ describe('mock', () => {
   });
 
   it('should successfully handle a failure lambda', async () => {
-    const lambda: NowLambda = (_, res) =>
+    const lambda: Lambda = (_, res) =>
       res.status(500).json({ success: false });
 
     const { fetch } = await mock(lambda);
@@ -31,7 +31,7 @@ describe('mock', () => {
   // it('should throw unahndled exception', async () => {
 
   //   const act = async () => {
-  //     const lambda: NowLambda = (_, res) => {
+  //     const lambda: Lambda = (_, res) => {
   //       throw new Error('Fatal Error');
   //     };
   //     const { fetch } = await mock(lambda);
@@ -43,7 +43,7 @@ describe('mock', () => {
 
 
   it('should receive payload from POST request', async () => {
-    const lambda: NowLambda = (req, res) => {
+    const lambda: Lambda = (req, res) => {
       const data = req.body;
       return res.status(200).json({ success: true, data });
     }

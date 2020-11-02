@@ -40,3 +40,7 @@ export interface MicronLambda {
 export interface Micron {
   (fn: MicronLambda): Lambda
 }
+
+export interface MicronMiddleware {
+  (fn: Lambda): Lambda
+}

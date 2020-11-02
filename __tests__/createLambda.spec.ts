@@ -1,4 +1,4 @@
-import { micron, createLambda, get, mockLambda, NowLambda, MicronParams, MicronLambda } from '../src'
+import { micron, createLambda, get, mockLambda, Lambda, MicronParams, MicronLambda } from '../src'
 
 const okLambda: MicronLambda = ({ req, body, ok }) =>
   ok({ success: true, msg: 'Test Passed', method: req.method, body });
@@ -6,7 +6,7 @@ const okLambda: MicronLambda = ({ req, body, ok }) =>
 describe('createLambda', () => {
   it('should ', async () => {
 
-    const testMiddleware = (fn: NowLambda) =>
+    const testMiddleware = (fn: Lambda) =>
       micron(({req, res}) => {
         //@ts-ignore
         req.test = 'injected';

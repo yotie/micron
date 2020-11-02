@@ -1,4 +1,4 @@
-import { Lambda, Request, Response  } from './types';
+import { Lambda, MicronMiddleware, Request, Response  } from './types';
 import cors, { CorsOptions } from './cors';
 
 // TIP: composition is a powerfull construct that micron leverages heavily,
@@ -10,10 +10,6 @@ const compose = (...fns: any[]) =>
     // Set initial value with blank HOF, so "f" above is always truthy on first iteration
     (fn: Lambda) => async (req: Request, res: Response) => fn(req, res)
   );
-
-export interface MicronMiddleware {
-  (fn: Lambda): Lambda
-}
 
 export type LambdaOptions = {
   cors?: CorsOptions,
