@@ -1347,9 +1347,9 @@
     "@types/yargs-parser" "*"
 
 "@vercel/node@^1.8.0":
-  version "1.8.4"
-  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-1.8.4.tgz#43bbc2e39f97979390e0f968952bba4ebfdcb22e"
-  integrity sha512-4bwJVqia4e/qDgBbdDWL2INZS5F/nouUDK+onJwi3xKGy7829cb8b9g2j7pMcqonv2U/xzOCUMyTr+uESx9hHQ==
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-1.11.1.tgz#3500dff4ebb4fa93e7451ffa16dcade8be2bb305"
+  integrity sha512-2OheDtjxr1OkYyvMh7laDkOA4K6KfLL60IBg1D+PksNri2YEFaPK1lzdq7xuByuDRUs+tm9U57sPVAlyzGjlvw==
   dependencies:
     "@types/node" "*"
     ts-node "8.9.1"
